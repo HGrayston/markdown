@@ -1,1 +1,31 @@
-test
+s
+
+
+
+
+void datmo::detect_current_motion()
+{
+    ROS_INFO("detecting current motion");
+
+    // Loop through all hits in the laser scan data
+    for (int loop_hit = 0; loop_hit < nb_beams; loop_hit++)
+    {
+        // Compare the current scan range with the stored background range
+        float current_range = r[loop_hit];          // Current laser scan range
+        float background_range = background[loop_hit]; // Stored background range
+
+        // Check if the difference exceeds the detection threshold
+        if (std::abs(current_range - background_range) > detection_threshold)
+        {
+            // Mark this hit as dynamic
+            dynamic[loop_hit] = true;
+        }
+        else
+        {
+            // Mark this hit as static
+            dynamic[loop_hit] = false;
+        }
+    }
+
+    ROS_INFO("current motion detected");
+}
